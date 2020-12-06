@@ -14,7 +14,20 @@ public interface PageService {
 
     /**
      *
+     * @param idBook
+     * @param pageNumber
      * @return
+     * @throws Exception
      */
-    PageDTO findBookPage(long idBook, long pageNumber) throws Exception;
+    Object findBookPage(long idBook, long pageNumber) throws Exception;
+
+    /**
+     *
+     * @param idBook
+     * @param pageNumber
+     * @param format
+     * @return
+     * @throws Exception
+     */
+    Object findBookPage(long idBook, long pageNumber, String format) throws Exception;
 }

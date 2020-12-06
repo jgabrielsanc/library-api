@@ -3,6 +3,8 @@ package com.gbh.library.service.implementation;
 import com.gbh.library.dao.implementation.PageDaoImpl;
 import com.gbh.library.dto.PageDTO;
 import com.gbh.library.exception.LibraryException;
+import com.gbh.library.factory.Format;
+import com.gbh.library.factory.FormatFactory;
 import com.gbh.library.mapper.PageMapper;
 import com.gbh.library.model.Page;
 import com.gbh.library.service.PageService;
@@ -21,6 +23,9 @@ public class PageServiceImpl implements PageService {
     @Inject
     private PageMapper pageMapper;
 
+    @Inject
+    private FormatFactory formatFactory;
+
     @Override
     public Collection<PageDTO> findAll() {
         return pageMapper.pagesToPagesDto(pageDao.find());
@@ -28,6 +33,20 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageDTO findBookPage(long idBook, long pageNumber) throws Exception {
+
+        return getPageDto(idBook, pageNumber);
+    }
+
+    @Override
+    public Object findBookPage(long idBook, long pageNumber, String format) throws Exception {
+
+        PageDTO page = getPageDto(idBook, pageNumber);
+
+        Format formatFound = this.formatFactory.createFormat(format);
+                return formatFound.create(page.getContent());
+    }
+
+    private PageDTO getPageDto(long idBook, long pageNumber) throws Exception {
         Optional<Page> page = pageDao.findByPageAndBook(idBook, pageNumber);
 
         return page.map(value -> pageMapper.pageToPageDto(value))

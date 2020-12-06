@@ -4,7 +4,6 @@ import liquibase.integration.cdi.CDILiquibaseConfig;
 import liquibase.integration.cdi.annotations.LiquibaseType;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
@@ -29,7 +28,6 @@ public class LiquibaseConfig {
     }
 
     @Produces
-    @SneakyThrows
     @LiquibaseType
     public DataSource dataSource() {
         log.info("getting liquibase datasource.");
