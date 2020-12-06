@@ -27,7 +27,7 @@ Java 8
 
 === Start service
 To start the service you need to run the docker-compose.
-It can be find in: link:../library-resources/docker/Dockerfile[docker-compose.yml]
+It can be find in: link:../library-resources/docker/docker-compose.yml[docker-compose.yml]
 [source,bash]
 ----
 docker stack deploy -c docker-compose.yaml library-test
@@ -71,6 +71,22 @@ curl --location --request GET 'http://localhost:8090/api/book'
 ]
 ----
 
+=== Find a book
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1'
+----
+
+.Success response
+[source,json]
+----
+{
+    "id": 1,
+    "name": "BOOK DUMMY 1"
+}
+----
+
 .Error response
 [source,json]
 ----
@@ -93,22 +109,6 @@ curl --location --request GET 'http://localhost:8090/api/book'
             "id": "ISO"
         }
     }
-}
-----
-
-=== Find a book
-.GET Request
-[source,bash]
-----
-curl --location --request GET 'http://localhost:8090/api/book/1'
-----
-
-.Success response
-[source,json]
-----
-{
-    "id": 1,
-    "name": "BOOK DUMMY 1"
 }
 ----
 
