@@ -162,7 +162,7 @@
                 <datasource jta="true" jndi-name="java:/PostgresDS" pool-name="PostgresDS" enabled="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://${env.POSTGRES_HOST}:${env.POSTGRES_PORT}/${env.POSTGRES_DB}</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
-                    <driver>postgresql-42.2.18.jar</driver>
+                    <driver>postgresql-42.2.10.jar</driver>
                     <security>
                         <user-name>${env.POSTGRES_USER}</user-name>
                         <password>${env.POSTGRES_PASSWORD}</password>
