@@ -9,5 +9,4 @@ public class BookDTO {
 
     private Long id;
     private String name;
-    private List<PageDTO> pages;
 }
