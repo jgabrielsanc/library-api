@@ -1,5 +1,289 @@
-# Library / Biblioteca 
+= API Library
 
-- [Instrucciones en Español](README_ES.md)
-- [Instructions in English](README_EN.md)
-- [Deployment Guide](library-documentation/DEPLOYMENT_GUIDE.adoc)
+This is an API REST project using gradle and running on
+Java 8
+
+== features
+
+* WildFly 21.0.1
+* Hibernate
+* PostgreSQL
+* Liquibase
+* Docker
+
+== Deployment using Docker
+
+=== Build using gradle
+[source,bash]
+----
+./gradlew clean war
+----
+
+=== Create docker image
+[source,bash]
+----
+./gradlew docker
+----
+
+=== Start service
+To start the service you need to run the docker-compose.
+It can be find in: link:../library-resources/docker/docker-compose.yml[docker-compose.yml]
+[source,bash]
+----
+docker stack deploy -c docker-compose.yml library-test
+----
+By default, it is running on port 8090
+
+Example to fetch al books:
+link:http://localhost:8090/api/book[localhost:8090/api/book]
+
+=== Stop service
+[source,bash]
+----
+docker stack rm library-test
+----
+
+== Example Requests
+
+=== Find books
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book'
+----
+
+.Success response
+[source,json]
+----
+[
+{
+"id": 1,
+"name": "BOOK 1"
+},
+{
+"id": 2,
+"name": "BOOK 2"
+},
+{
+"id": 3,
+"name": "BOOK 3"
+}
+]
+----
+
+=== Find a book
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1'
+----
+
+.Success response
+[source,json]
+----
+{
+"id": 1,
+"name": "BOOK 1"
+}
+----
+
+.Error response
+[source,json]
+----
+{
+"code": 404,
+"message": "Book not found with id: 6",
+"date": {
+"nano": 400037000,
+"year": 2020,
+"monthValue": 12,
+"dayOfMonth": 6,
+"hour": 17,
+"minute": 16,
+"second": 44,
+"dayOfWeek": "SUNDAY",
+"dayOfYear": 341,
+"month": "DECEMBER",
+"chronology": {
+"calendarType": "iso8601",
+"id": "ISO"
+}
+}
+}
+----
+
+=== Find book pages
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1/page'
+----
+
+.Success response
+[source,json]
+----
+[
+{
+"id": 1,
+"number": 1,
+"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porta in quam in porta. Nullam ullamcorper velit vel velit sagittis pellentesque. Aliquam varius diam vel odio rhoncus rutrum quis eu ligula. Donec sollicitudin volutpat eleifend. Sed semper vel mi vitae porta. Mauris congue, sem in porta fringilla, nisi risus cursus quam, at ultricies ante quam sit amet sem. Nunc eget vestibulum sapien, in sodales ipsum. In quis purus eu lorem suscipit pretium. Proin vulputate porttitor placerat.\nAenean non porta sapien, nec ultricies enim. Morbi nec elit urna. Proin rhoncus tortor velit, a dapibus sem volutpat id. Suspendisse vehicula et magna a feugiat. Etiam vel velit efficitur, rutrum mi in, maximus nunc. Nullam cursus, libero a posuere placerat, lacus magna maximus augue, a tempor nisl purus vitae neque. Nulla hendrerit sapien laoreet orci tempor pulvinar nec at enim. Aliquam sit amet tellus nulla. Sed a congue est. Curabitur at turpis ac nibh feugiat tristique ut non erat. Donec imperdiet orci quis lacus tincidunt, non ornare mauris lacinia. Nullam cursus lorem ac lacus viverra hendrerit. Cras fringilla elit ac libero euismod, eget porttitor mauris lobortis. Donec sed lobortis sapien, in pharetra ipsum.\nAliquam eget massa in sapien fermentum luctus non sit amet leo. Aliquam non dolor a quam bibendum luctus in at felis. Vivamus tincidunt felis eget sem laoreet dictum. Sed eleifend leo libero, non consectetur ligula blandit ac. Curabitur lobortis eros elit, eget sollicitudin justo eleifend sed. Phasellus ante tortor, vestibulum sit amet malesuada et, laoreet id purus. Suspendisse vulputate dapibus dolor sed aliquet. Curabitur sem diam, consequat in augue ac, viverra auctor metus. Maecenas vulputate velit urna, ac gravida sapien pulvinar non. Maecenas et venenatis eros. Quisque in fermentum leo, ultrices vehicula massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo quam, fermentum at nisl at, fermentum facilisis magna. Nulla congue tempor risus, at molestie tortor mollis pellentesque.\nCras lacus ex, mattis in viverra eget, auctor in ipsum. Suspendisse libero arcu, semper sed efficitur at, consectetur vitae mauris. Duis pharetra enim sit amet aliquet sagittis. Etiam nulla nibh, sodales non orci ac, lacinia ullamcorper nisi. Proin tempus orci in neque laoreet pharetra. Suspendisse non arcu lectus. Phasellus pharetra semper vestibulum. Aliquam condimentum sapien at erat interdum malesuada. Maecenas pellentesque dolor ante. Proin feugiat rhoncus nisl, at euismod sapien blandit eu. Sed consectetur dictum nisi, ac faucibus ipsum consectetur vel. Sed metus tortor, tempus quis nisi vestibulum, sodales maximus nibh.\nMorbi posuere convallis nunc, in tincidunt ex auctor a. Morbi vitae nunc non mi faucibus blandit. Pellentesque nunc ligula, sagittis sit amet est in, cursus hendrerit augue. Nulla congue consectetur hendrerit. Integer quis velit sit amet eros lobortis interdum ac vitae lectus. Pellentesque quis velit sit amet quam dictum ornare. Suspendisse molestie felis a mauris cursus posuere."
+}
+]
+----
+
+=== Find a book page
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1/page/1'
+----
+
+.Success response
+[source,json]
+----
+{
+"id": 1,
+"number": 1,
+"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porta in quam in porta. Nullam ullamcorper velit vel velit sagittis pellentesque. Aliquam varius diam vel odio rhoncus rutrum quis eu ligula. Donec sollicitudin volutpat eleifend. Sed semper vel mi vitae porta. Mauris congue, sem in porta fringilla, nisi risus cursus quam, at ultricies ante quam sit amet sem. Nunc eget vestibulum sapien, in sodales ipsum. In quis purus eu lorem suscipit pretium. Proin vulputate porttitor placerat.\nAenean non porta sapien, nec ultricies enim. Morbi nec elit urna. Proin rhoncus tortor velit, a dapibus sem volutpat id. Suspendisse vehicula et magna a feugiat. Etiam vel velit efficitur, rutrum mi in, maximus nunc. Nullam cursus, libero a posuere placerat, lacus magna maximus augue, a tempor nisl purus vitae neque. Nulla hendrerit sapien laoreet orci tempor pulvinar nec at enim. Aliquam sit amet tellus nulla. Sed a congue est. Curabitur at turpis ac nibh feugiat tristique ut non erat. Donec imperdiet orci quis lacus tincidunt, non ornare mauris lacinia. Nullam cursus lorem ac lacus viverra hendrerit. Cras fringilla elit ac libero euismod, eget porttitor mauris lobortis. Donec sed lobortis sapien, in pharetra ipsum.\nAliquam eget massa in sapien fermentum luctus non sit amet leo. Aliquam non dolor a quam bibendum luctus in at felis. Vivamus tincidunt felis eget sem laoreet dictum. Sed eleifend leo libero, non consectetur ligula blandit ac. Curabitur lobortis eros elit, eget sollicitudin justo eleifend sed. Phasellus ante tortor, vestibulum sit amet malesuada et, laoreet id purus. Suspendisse vulputate dapibus dolor sed aliquet. Curabitur sem diam, consequat in augue ac, viverra auctor metus. Maecenas vulputate velit urna, ac gravida sapien pulvinar non. Maecenas et venenatis eros. Quisque in fermentum leo, ultrices vehicula massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo quam, fermentum at nisl at, fermentum facilisis magna. Nulla congue tempor risus, at molestie tortor mollis pellentesque.\nCras lacus ex, mattis in viverra eget, auctor in ipsum. Suspendisse libero arcu, semper sed efficitur at, consectetur vitae mauris. Duis pharetra enim sit amet aliquet sagittis. Etiam nulla nibh, sodales non orci ac, lacinia ullamcorper nisi. Proin tempus orci in neque laoreet pharetra. Suspendisse non arcu lectus. Phasellus pharetra semper vestibulum. Aliquam condimentum sapien at erat interdum malesuada. Maecenas pellentesque dolor ante. Proin feugiat rhoncus nisl, at euismod sapien blandit eu. Sed consectetur dictum nisi, ac faucibus ipsum consectetur vel. Sed metus tortor, tempus quis nisi vestibulum, sodales maximus nibh.\nMorbi posuere convallis nunc, in tincidunt ex auctor a. Morbi vitae nunc non mi faucibus blandit. Pellentesque nunc ligula, sagittis sit amet est in, cursus hendrerit augue. Nulla congue consectetur hendrerit. Integer quis velit sit amet eros lobortis interdum ac vitae lectus. Pellentesque quis velit sit amet quam dictum ornare. Suspendisse molestie felis a mauris cursus posuere."
+}
+----
+
+.Error response
+[source,json]
+----
+{
+"code": 404,
+"message": "Page not found with number: 6",
+"date": {
+"nano": 13524000,
+"year": 2020,
+"monthValue": 12,
+"dayOfMonth": 6,
+"hour": 17,
+"minute": 19,
+"second": 18,
+"dayOfWeek": "SUNDAY",
+"dayOfYear": 341,
+"month": "DECEMBER",
+"chronology": {
+"calendarType": "iso8601",
+"id": "ISO"
+}
+}
+}
+----
+
+=== Find a book page in format requested - HTML
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1/page/1/html'
+----
+
+.Success response
+[source,html]
+----
+<html>
+
+<body>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porta in quam in porta. Nullam ullamcorper
+		velit vel velit sagittis pellentesque. Aliquam varius diam vel odio rhoncus rutrum quis eu ligula. Donec
+		sollicitudin volutpat eleifend. Sed semper vel mi vitae porta. Mauris congue, sem in porta fringilla, nisi risus
+		cursus quam, at ultricies ante quam sit amet sem. Nunc eget vestibulum sapien, in sodales ipsum. In quis purus
+		eu lorem suscipit pretium. Proin vulputate porttitor placerat.
+		Aenean non porta sapien, nec ultricies enim. Morbi nec elit urna. Proin rhoncus tortor velit, a dapibus sem
+		volutpat id. Suspendisse vehicula et magna a feugiat. Etiam vel velit efficitur, rutrum mi in, maximus nunc.
+		Nullam cursus, libero a posuere placerat, lacus magna maximus augue, a tempor nisl purus vitae neque. Nulla
+		hendrerit sapien laoreet orci tempor pulvinar nec at enim. Aliquam sit amet tellus nulla. Sed a congue est.
+		Curabitur at turpis ac nibh feugiat tristique ut non erat. Donec imperdiet orci quis lacus tincidunt, non ornare
+		mauris lacinia. Nullam cursus lorem ac lacus viverra hendrerit. Cras fringilla elit ac libero euismod, eget
+		porttitor mauris lobortis. Donec sed lobortis sapien, in pharetra ipsum.
+		Aliquam eget massa in sapien fermentum luctus non sit amet leo. Aliquam non dolor a quam bibendum luctus in at
+		felis. Vivamus tincidunt felis eget sem laoreet dictum. Sed eleifend leo libero, non consectetur ligula blandit
+		ac. Curabitur lobortis eros elit, eget sollicitudin justo eleifend sed. Phasellus ante tortor, vestibulum sit
+		amet malesuada et, laoreet id purus. Suspendisse vulputate dapibus dolor sed aliquet. Curabitur sem diam,
+		consequat in augue ac, viverra auctor metus. Maecenas vulputate velit urna, ac gravida sapien pulvinar non.
+		Maecenas et venenatis eros. Quisque in fermentum leo, ultrices vehicula massa. Lorem ipsum dolor sit amet,
+		consectetur adipiscing elit. Morbi leo quam, fermentum at nisl at, fermentum facilisis magna. Nulla congue
+		tempor risus, at molestie tortor mollis pellentesque.
+		Cras lacus ex, mattis in viverra eget, auctor in ipsum. Suspendisse libero arcu, semper sed efficitur at,
+		consectetur vitae mauris. Duis pharetra enim sit amet aliquet sagittis. Etiam nulla nibh, sodales non orci ac,
+		lacinia ullamcorper nisi. Proin tempus orci in neque laoreet pharetra. Suspendisse non arcu lectus. Phasellus
+		pharetra semper vestibulum. Aliquam condimentum sapien at erat interdum malesuada. Maecenas pellentesque dolor
+		ante. Proin feugiat rhoncus nisl, at euismod sapien blandit eu. Sed consectetur dictum nisi, ac faucibus ipsum
+		consectetur vel. Sed metus tortor, tempus quis nisi vestibulum, sodales maximus nibh.
+		Morbi posuere convallis nunc, in tincidunt ex auctor a. Morbi vitae nunc non mi faucibus blandit. Pellentesque
+		nunc ligula, sagittis sit amet est in, cursus hendrerit augue. Nulla congue consectetur hendrerit. Integer quis
+		velit sit amet eros lobortis interdum ac vitae lectus. Pellentesque quis velit sit amet quam dictum ornare.
+		Suspendisse molestie felis a mauris cursus posuere.</p>
+</body>
+
+</html>
+----
+
+.Error response
+[source,json]
+----
+{
+"code": 400,
+"message": "format type yml not supported",
+"date": {
+"nano": 697519000,
+"year": 2020,
+"monthValue": 12,
+"dayOfMonth": 6,
+"hour": 17,
+"minute": 22,
+"second": 7,
+"dayOfWeek": "SUNDAY",
+"dayOfYear": 341,
+"month": "DECEMBER",
+"chronology": {
+"calendarType": "iso8601",
+"id": "ISO"
+}
+}
+}
+----
+
+=== Find a book page in format requested - PLAIN TEXT
+.GET Request
+[source,bash]
+----
+curl --location --request GET 'http://localhost:8090/api/book/1/page/1/text'
+----
+
+.Success response
+[source,text]
+----
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porta in quam in porta. Nullam ullamcorper velit vel velit sagittis pellentesque. Aliquam varius diam vel odio rhoncus rutrum quis eu ligula. Donec sollicitudin volutpat eleifend. Sed semper vel mi vitae porta. Mauris congue, sem in porta fringilla, nisi risus cursus quam, at ultricies ante quam sit amet sem. Nunc eget vestibulum sapien, in sodales ipsum. In quis purus eu lorem suscipit pretium. Proin vulputate porttitor placerat.
+Aenean non porta sapien, nec ultricies enim. Morbi nec elit urna. Proin rhoncus tortor velit, a dapibus sem volutpat id. Suspendisse vehicula et magna a feugiat. Etiam vel velit efficitur, rutrum mi in, maximus nunc. Nullam cursus, libero a posuere placerat, lacus magna maximus augue, a tempor nisl purus vitae neque. Nulla hendrerit sapien laoreet orci tempor pulvinar nec at enim. Aliquam sit amet tellus nulla. Sed a congue est. Curabitur at turpis ac nibh feugiat tristique ut non erat. Donec imperdiet orci quis lacus tincidunt, non ornare mauris lacinia. Nullam cursus lorem ac lacus viverra hendrerit. Cras fringilla elit ac libero euismod, eget porttitor mauris lobortis. Donec sed lobortis sapien, in pharetra ipsum.
+Aliquam eget massa in sapien fermentum luctus non sit amet leo. Aliquam non dolor a quam bibendum luctus in at felis. Vivamus tincidunt felis eget sem laoreet dictum. Sed eleifend leo libero, non consectetur ligula blandit ac. Curabitur lobortis eros elit, eget sollicitudin justo eleifend sed. Phasellus ante tortor, vestibulum sit amet malesuada et, laoreet id purus. Suspendisse vulputate dapibus dolor sed aliquet. Curabitur sem diam, consequat in augue ac, viverra auctor metus. Maecenas vulputate velit urna, ac gravida sapien pulvinar non. Maecenas et venenatis eros. Quisque in fermentum leo, ultrices vehicula massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo quam, fermentum at nisl at, fermentum facilisis magna. Nulla congue tempor risus, at molestie tortor mollis pellentesque.
+Cras lacus ex, mattis in viverra eget, auctor in ipsum. Suspendisse libero arcu, semper sed efficitur at, consectetur vitae mauris. Duis pharetra enim sit amet aliquet sagittis. Etiam nulla nibh, sodales non orci ac, lacinia ullamcorper nisi. Proin tempus orci in neque laoreet pharetra. Suspendisse non arcu lectus. Phasellus pharetra semper vestibulum. Aliquam condimentum sapien at erat interdum malesuada. Maecenas pellentesque dolor ante. Proin feugiat rhoncus nisl, at euismod sapien blandit eu. Sed consectetur dictum nisi, ac faucibus ipsum consectetur vel. Sed metus tortor, tempus quis nisi vestibulum, sodales maximus nibh.
+Morbi posuere convallis nunc, in tincidunt ex auctor a. Morbi vitae nunc non mi faucibus blandit. Pellentesque nunc ligula, sagittis sit amet est in, cursus hendrerit augue. Nulla congue consectetur hendrerit. Integer quis velit sit amet eros lobortis interdum ac vitae lectus. Pellentesque quis velit sit amet quam dictum ornare. Suspendisse molestie felis a mauris cursus posuere.
+----
+
+.Error response
+[source,json]
+----
+{
+"code": 400,
+"message": "format type textt not supported",
+"date": {
+"nano": 324713000,
+"year": 2020,
+"monthValue": 12,
+"dayOfMonth": 6,
+"hour": 17,
+"minute": 26,
+"second": 41,
+"dayOfWeek": "SUNDAY",
+"dayOfYear": 341,
+"month": "DECEMBER",
+"chronology": {
+"calendarType": "iso8601",
+"id": "ISO"
+}
+}
+}
+----
