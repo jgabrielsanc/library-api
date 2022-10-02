@@ -1,6 +1,6 @@
 package com.gbh.library.service.implementation;
 
-import com.gbh.library.dao.implementation.PageDaoImpl;
+import com.gbh.library.dao.PageDAO;
 import com.gbh.library.dto.PageDTO;
 import com.gbh.library.exception.LibraryException;
 import com.gbh.library.factory.Format;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class PageServiceImpl implements PageService {
 
     @Inject
-    private PageDaoImpl pageDao;
+    private PageDAO pageDAO;
 
     @Inject
     private PageMapper pageMapper;
@@ -28,7 +28,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Collection<PageDTO> findAll() {
-        return pageMapper.pagesToPagesDto(pageDao.find());
+        return pageMapper.pagesToPagesDto(pageDAO.find());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PageServiceImpl implements PageService {
     }
 
     private PageDTO getPageDto(long idBook, long pageNumber) throws Exception {
-        Optional<Page> page = pageDao.findByPageAndBook(idBook, pageNumber);
+        Optional<Page> page = pageDAO.findByPageAndBook(idBook, pageNumber);
 
         return page.map(value -> pageMapper.pageToPageDto(value))
                 .orElseThrow(() ->

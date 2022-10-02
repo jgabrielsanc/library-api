@@ -12,9 +12,9 @@ create table book
 
 create sequence book_seq increment by 1;
 
-INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK DUMMY 1');
-INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK DUMMY 2');
-INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK DUMMY 3');
+INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK 1');
+INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK 2');
+INSERT INTO book VALUES (nextval('public."book_seq"'), 'BOOK 3');
 
 create table page
 (

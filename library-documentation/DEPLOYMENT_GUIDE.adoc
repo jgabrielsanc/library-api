@@ -30,7 +30,7 @@ To start the service you need to run the docker-compose.
 It can be find in: link:../library-resources/docker/docker-compose.yml[docker-compose.yml]
 [source,bash]
 ----
-docker stack deploy -c docker-compose.yaml library-test
+docker stack deploy -c docker-compose.yml library-test
 ----
 By default, it is running on port 8090
 
@@ -58,15 +58,15 @@ curl --location --request GET 'http://localhost:8090/api/book'
 [
     {
         "id": 1,
-        "name": "BOOK DUMMY 1"
+        "name": "BOOK 1"
     },
     {
         "id": 2,
-        "name": "BOOK DUMMY 2"
+        "name": "BOOK 2"
     },
     {
         "id": 3,
-        "name": "BOOK DUMMY 3"
+        "name": "BOOK 3"
     }
 ]
 ----
@@ -83,7 +83,7 @@ curl --location --request GET 'http://localhost:8090/api/book/1'
 ----
 {
     "id": 1,
-    "name": "BOOK DUMMY 1"
+    "name": "BOOK 1"
 }
 ----
 

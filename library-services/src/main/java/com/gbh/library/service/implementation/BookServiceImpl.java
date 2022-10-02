@@ -1,6 +1,6 @@
 package com.gbh.library.service.implementation;
 
-import com.gbh.library.dao.implementation.BookDaoImpl;
+import com.gbh.library.dao.BookDAO;
 import com.gbh.library.dto.BookDTO;
 import com.gbh.library.exception.LibraryException;
 import com.gbh.library.mapper.BookMapper;
@@ -16,20 +16,20 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     @Inject
-    private BookDaoImpl bookDaoImpl;
+    private BookDAO bookDAO;
 
     @Inject
     private BookMapper bookMapper;
 
     @Override
     public Collection<BookDTO> findAll() {
-        return bookMapper.booksToBooksDto(bookDaoImpl.find());
+        return bookMapper.booksToBooksDto(bookDAO.find());
     }
 
     @Override
     public BookDTO find(long id) throws Exception {
 
-        Optional<Book> book = bookDaoImpl.find(id);
+        Optional<Book> book = bookDAO.find(id);
 
         return book.map(value -> bookMapper.bookToBookDto(value))
                 .orElseThrow(() ->
